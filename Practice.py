@@ -1,5 +1,6 @@
 import sqlite3
 
+#  START TO-DO: refactor
 class CreatePerson():
     def __init__(self, first, last, age, pay):
         self.first = first
@@ -7,6 +8,7 @@ class CreatePerson():
         self.age = age
         self.pay = pay
 
+#  END TO-DO: Refactor
 conn = sqlite3.connect(':memory:')
 
 c = conn.cursor()

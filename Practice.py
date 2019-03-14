@@ -11,6 +11,16 @@ conn = sqlite3.connect(':memory:')
 
 c = conn.cursor()
 
+#  START DB table creation
+c.execute("""CREATE TABLE people (
+            first text,
+            last text,
+            age integer,
+            pay integer
+            )""")
+#  END DB table creation
+
+#  Funtions for working with DB
 def add_person(person):
     with conn:
         c.execute("INSERT INTO people VALUES (:first, :last, :age, :pay)", 
@@ -25,17 +35,11 @@ def change_attr(person, column, value):
     try: getattr(person, column)
     except: print('Thats not a valid attribute.')
     with conn:
-        c.execute(f"UPDATE people SET {column} = {value} WHERE first=? AND last=?", (person.first, person.last)) 
-        # {'column':'age', 'value':value, 'first':person.first, 'last':person.last})
+        c.execute(f"UPDATE people SET {column} = {value} WHERE first=? AND last=?", 
+        (person.first, person.last)) 
+        # F-String substitution required. Unable to set variables for Table/Column names
 
-
-c.execute("""CREATE TABLE people (
-            first text,
-            last text,
-            age integer,
-            pay integer
-            )""")
-
+#  Test additions and modifications
 me = CreatePerson('Will', 'Dove', 30, 90000)
 add_person(me)
 

@@ -29,7 +29,7 @@ def add_person(*args):
                         (person.first, person.last, person.age, person.pay))
 
 def find_person(lastname):
-    c.execute("SELECT * FROM people WHERE last = :last", (lastname, )) 
+    c.execute("SELECT * FROM people WHERE last = ?", (lastname, )) 
     return c.fetchall()
 
 def change_attr(person, column, value):
@@ -48,7 +48,7 @@ per4 = CreatePerson('Ronie', 'Dove', 66, 20000)
 
 add_person(per1, per2, per3, per4)
 
-print(find_person('Dove'))
+print(find_person('Rambo'))
 change_attr(per1, 'pay', 40000)
 print(find_person('Dove'))
 

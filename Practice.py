@@ -21,14 +21,15 @@ c.execute("""CREATE TABLE people (
 #  END DB table creation
 
 #  Funtions for working with DB
-def add_person(person):
+def add_person(*args):
     with conn:
-        c.execute("INSERT INTO people VALUES (:first, :last, :age, :pay)", 
-                {'first':person.first, 'last':person.last, 'age':person.age, 'pay':person.pay})
+        persons = [*args]
+        for person in persons:
+                c.execute("INSERT INTO people VALUES (?, ?, ?, ?)", 
+                        (person.first, person.last, person.age, person.pay))
 
 def find_person(lastname):
-    c.execute("SELECT * FROM people WHERE last = :last", 
-                {'last': lastname}) 
+    c.execute("SELECT * FROM people WHERE last = :last", (lastname, )) 
     return c.fetchall()
 
 def change_attr(person, column, value):
@@ -40,11 +41,15 @@ def change_attr(person, column, value):
         # F-String substitution required. Unable to set variables for Table/Column names
 
 #  Test additions and modifications
-me = CreatePerson('Will', 'Dove', 30, 90000)
-add_person(me)
+per1 = CreatePerson('Will', 'Dove', 30, 90000)
+per2 = CreatePerson('Ryann', 'Rambo', 32, 100000)
+per3 = CreatePerson('Tom', 'Dove', 61, 89999)
+per4 = CreatePerson('Ronie', 'Dove', 66, 20000)
+
+add_person(per1, per2, per3, per4)
 
 print(find_person('Dove'))
-change_attr(me, 'pay', 40000)
+change_attr(per1, 'pay', 40000)
 print(find_person('Dove'))
 
 conn.commit()
